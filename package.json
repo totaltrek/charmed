@@ -1,0 +1,22 @@
+{
+  "name": "unicode",
+  "version": "0.0.0",
+  "description": "Unicode/ASCII/HTML conversion utility",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iConstituent/unicode.git"
+  },
+  "keywords": [
+    "unicode",
+    "ascii",
+    "html",
+    "convert"
+  ],
+  "author": "Eric C. Davis <iconecd@users.noreply.github.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iConstituent/unicode/issues"
+  },
+  "homepage": "https://github.com/iConstituent/unicode"
+}
