@@ -18,7 +18,7 @@ raw.html.forEach( function ( val, ix, arr ) {
 } );
 
 raw.unicode.forEach( function ( val, ix, arr ) {
-	clean.unicode.push( String( "0000" + val ).slice( -4 ) );
+	clean.unicode.push( '\u' + String( "0000" + val ).slice( -4 ) );
 } );
 
 module.exports = function () {
