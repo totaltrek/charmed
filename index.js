@@ -1,6 +1,7 @@
 var fs = require('fs');
+var path = require('path');
 
-var chars = JSON.parse( fs.readFileSync( './chars.json', { encoding: 'utf16le' } ) );
+var chars = JSON.parse( fs.readFileSync( path.resolve( __dirname + '/chars.json' ), { encoding: 'utf16le' } ) );
 
 var options = {
 	ascii: true,
