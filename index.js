@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var chars = JSON.parse( fs.readFileSync( './controllers/chars.json', { encoding: 'utf16le' } ) );
+var chars = JSON.parse( fs.readFileSync( './chars.json', { encoding: 'utf16le' } ) );
 
 var options = {
 	ascii: true,
