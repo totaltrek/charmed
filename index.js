@@ -28,6 +28,7 @@ chars.forEach( function ( val, ix, arr ) {
 } );
 
 var charming = function () {
+	var self = this;
 
 	function convert ( input, source, target ) {
 		output = input;
@@ -136,16 +137,16 @@ var charming = function () {
 	this.toAscii = function ( input ) {
 		var output = input;
 		if ( options.html === true ) {
-			output = this.htmlToAscii( output );
+			output = self.htmlToAscii( output );
 		}
 		if ( options.raw === true ) {
-			output = this.rawToAscii( output );
+			output = self.rawToAscii( output );
 		}
 		if ( options.simple === true ) {
-			output = this.simpleToAscii( output );
+			output = self.simpleToAscii( output );
 		}
 		if ( options.unicode === true ) {
-			this.unicodeToAscii( output );
+			output = self.unicodeToAscii( output );
 		}
 		return output;
 	};
@@ -153,16 +154,16 @@ var charming = function () {
 	this.toHtml = function ( input ) {
 		var output = input;
 		if ( options.ascii === true ) {
-			output = this.asciiToHtml( output );
+			output = self.asciiToHtml( output );
 		}
 		if ( options.raw === true ) {
-			output = this.rawToHtml( output );
+			output = self.rawToHtml( output );
 		}
 		if ( options.simple === true ) {
-			output = this.simpleToHtml( output );
+			output = self.simpleToHtml( output );
 		}
 		if ( options.unicode === true ) {
-			output = this.unicodeToHtml( output );
+			output = self.unicodeToHtml( output );
 		}
 		return output;
 	};
@@ -170,16 +171,16 @@ var charming = function () {
 	this.toRaw = function ( input ) {
 		var output = input;
 		if ( options.ascii === true ) {
-			output = this.asciiToRaw( output );
+			output = self.asciiToRaw( output );
 		}
 		if ( options.html === true ) {
-			output = this.htmlToRaw( output );
+			output = self.htmlToRaw( output );
 		}
 		if ( options.simple === true ) {
-			output = this.simpleToRaw( output );
+			output = self.simpleToRaw( output );
 		}
 		if ( options.unicode === true ) {
-			output = this.unicodeToRaw( output );
+			output = self.unicodeToRaw( output );
 		}
 		return output;
 	};
@@ -187,16 +188,16 @@ var charming = function () {
 	this.toSimple = function ( input ) {
 		var output = input;
 		if ( options.ascii === true ) {
-			output = this.asciiToSimple( output );
+			output = self.asciiToSimple( output );
 		}
 		if ( options.html === true ) {
-			output = this.htmlToSimple( output );
+			output = self.htmlToSimple( output );
 		}
 		if ( options.raw === true ) {
-			output = this.rawToSimple( output );
+			output = self.rawToSimple( output );
 		}
 		if ( options.unicode === true ) {
-			output = this.unicodeToSimple( output );
+			output = self.unicodeToSimple( output );
 		}
 		return output;
 	};
@@ -204,16 +205,16 @@ var charming = function () {
 	this.toUnicode = function ( input ) {
 		var output = input;
 		if ( options.ascii === true ) {
-			output = this.asciiToUnicode( output );
+			output = self.asciiToUnicode( output );
 		}
 		if ( options.html === true ) {
-			output = this.htmlToUnicode( output );
+			output = self.htmlToUnicode( output );
 		}
 		if ( options.raw === true ) {
-			output = this.rawToUnicode( output );
+			output = self.rawToUnicode( output );
 		}
 		if ( options.simple === true ) {
-			output = this.simpleToUnicode( output );
+			output = self.simpleToUnicode( output );
 		}
 		return output;
 	};
