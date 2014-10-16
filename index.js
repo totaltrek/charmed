@@ -5,7 +5,7 @@ var chars = JSON.parse( fs.readFileSync( path.resolve( __dirname + '/chars.json'
 
 var options = {
 	ascii: true,
-	html: false,
+	html: true,
 	raw: true,
 	simple: false,
 	unicode: true,
