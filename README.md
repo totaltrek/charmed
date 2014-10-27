@@ -15,7 +15,7 @@ charmed.config( {
 	simple: false,
 	unicode: true
 } );
-charmed.toHtml( textToConvert );
+var convertedText = charmed.toHtml( textToConvert );
 ```
 
 #Configuration
