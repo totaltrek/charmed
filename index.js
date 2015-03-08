@@ -37,18 +37,18 @@ var Charming = function () {
 	var self = this;
 
 	function convert ( input, source, target ) {
-		if ( ! options[ source ] ) return input;
+		if ( ! options[ source ] ) {
+			/* only convert from source if configured to */
+			return input;
+		}
+		if ( source == 'simple' && ! options.disableWarning ) {
+			console.log( 'Charmed warning: Conversion from simple is not recommended.' );
+		}
 		var output = input;
 		clean[ source ].forEach( function ( val, ix ) {
 			output = output.split( val ).join( options[ target ][ ix ] );
 		} );
 		return output;
-	}
-
-	function simpleWarning () {
-		if ( options.disableWarning === false ) {
-			console.log( 'Charmed warning: Conversion from simple is not recommended.' );
-		}
 	}
 
 	/* ascii */
@@ -104,22 +104,18 @@ var Charming = function () {
 
 	/* simple */
 	this.simpleToAscii = function ( input ) {
-		simpleWarning();
 		return convert( input, 'simple', 'ascii' );
 	};
 
 	this.simpleToRaw = function ( input ) {
-		simpleWarning();
 		return convert( input, 'simple', 'raw' );
 	};
 
 	this.simpleToSimple = function ( input ) {
-		simpleWarning();
 		return convert( input, 'simple', 'simple' );
 	};
 
 	this.simpleToUnicode = function ( input ) {
-		simpleWarning();
 		return convert( input, 'simple', 'unicode' );
 	};
 
@@ -182,12 +178,9 @@ var Charming = function () {
 	};
 
 	this.config = function ( configOpts ) {
-		var opts = Object.keys( options );
-		for ( var opt in opts ) {
-			if ( configOpts.hasOwnProperty( opt ) ) {
-				options[ opt ] = configOpts[ opt ];
-			}
-		}
+		Object.keys( configOpts ).forEach( function ( opt ) {
+			options[ opt ] = configOpts[ opt ];
+		});
 	};
 };
 
