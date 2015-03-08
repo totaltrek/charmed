@@ -1,7 +1,11 @@
-var fs = require('fs');
-var path = require('path');
+"use strict";
 
-var chars = JSON.parse( fs.readFileSync( path.resolve( __dirname + '/chars.json' ), { encoding: 'utf16le' } ) );
+var	fs = require('fs'),
+	path = require('path'),
+	charfile = path.resolve( __dirname + '/chars.json' ),
+	filedata = fs.readFileSync( charfile, { encoding: 'utf16le' } ),
+	chars = JSON.parse( filedata ),
+	clean = [];
 
 var options = {
 	ascii: true,
@@ -12,29 +16,22 @@ var options = {
 	disableWarning: false
 };
 
-var clean = {
-	ascii: [],
-	html: [],
-	raw: [],
-	simple: [],
-	unicode: []
-};
-
-chars.forEach( function ( val, ix, arr ) {
+chars.forEach( function ( val ) {
 	clean.ascii.push( String.fromCharCode( val.ascii ) );
 	clean.html.push( '&' + val.html + ';' );
 	clean.raw.push( val.raw );
 	clean.simple.push( val.simple );
 	clean.unicode.push( '\\u' + String( "0000" + val.unicode ).slice( -4 ) );
-} );
+});
 
-var charming = function () {
+var Charming = function () {
 	var self = this;
 
 	function convert ( input, source, target ) {
-		output = input;
-		source.forEach( function ( val, ix, arr ) {
-			output = output.split( val ).join( target[ ix ] );
+		if ( ! options[ source ] ) return input;
+		var output = input;
+		clean[ source ].forEach( function ( val, ix ) {
+			output = output.split( val ).join( options[ target ][ ix ] );
 		} );
 		return output;
 	}
@@ -47,177 +44,132 @@ var charming = function () {
 
 	/* ascii */
 	this.asciiToHtml = function ( input ) {
-		return convert( input, clean.ascii, clean.html );
+		return convert( input, 'ascii', 'html' );
 	};
 
 	this.asciiToRaw = function ( input ) {
-		return convert( input, clean.ascii, clean.raw );
+		return convert( input, 'ascii', 'raw' );
 	};
 
 	this.asciiToSimple = function ( input ) {
-		return convert( input, clean.ascii, clean.simple );
+		return convert( input, 'ascii', 'simple' );
 	};
 
 	this.asciiToUnicode = function ( input ) {
-		return convert( input, clean.ascii, clean.unicode );
+		return convert( input, 'ascii', 'unicode' );
 	};
 
 	/* html */
 	this.htmlToAscii = function ( input ) {
-		return convert( input, clean.html, clean.ascii );
+		return convert( input, 'html', 'ascii' );
 	};
 
 	this.htmlToRaw = function ( input ) {
-		return convert( input, clean.html, clean.raw );
+		return convert( input, 'html', 'raw' );
 	};
 
 	this.htmlToSimple = function ( input ) {
-		return convert( input, clean.html, clean.simple );
+		return convert( input, 'html', 'simple' );
 	};
 
 	this.htmlToUnicode = function ( input ) {
-		return convert( input, clean.html, clean.unicode );
+		return convert( input, 'html', 'unicode' );
 	};
 
 	/* raw */
 	this.rawToAscii = function ( input ) {
-		return convert( input, clean.raw, clean.ascii );
+		return convert( input, 'raw', 'ascii' );
 	};
 
 	this.rawToHtml = function ( input ) {
-		return convert( input, clean.raw, clean.raw );
+		return convert( input, 'raw', 'raw' );
 	};
 
 	this.rawToSimple = function ( input ) {
-		return convert( input, clean.raw, clean.simple );
+		return convert( input, 'raw', 'simple' );
 	};
 
 	this.rawToUnicode = function ( input ) {
-		return convert( input, clean.raw, clean.unicode );
+		return convert( input, 'raw', 'unicode' );
 	};
 
 	/* simple */
 	this.simpleToAscii = function ( input ) {
 		simpleWarning();
-		return convert( input, clean.simple, clean.ascii );
+		return convert( input, 'simple', 'ascii' );
 	};
 
 	this.simpleToRaw = function ( input ) {
 		simpleWarning();
-		return convert( input, clean.simple, clean.raw );
+		return convert( input, 'simple', 'raw' );
 	};
 
 	this.simpleToSimple = function ( input ) {
 		simpleWarning();
-		return convert( input, clean.simple, clean.simple );
+		return convert( input, 'simple', 'simple' );
 	};
 
 	this.simpleToUnicode = function ( input ) {
 		simpleWarning();
-		return convert( input, clean.simple, clean.unicode );
+		return convert( input, 'simple', 'unicode' );
 	};
 
 	/* unicode */
 	this.unicodeToAscii = function ( input ) {
-		return convert( input, clean.unicode, clean.ascii );
+		return convert( input, 'unicode', 'ascii' );
 	};
 
 	this.unicodeToHtml = function ( input ) {
-		return convert( input, clean.unicode, clean.html );
+		return convert( input, 'unicode', 'html' );
 	};
 
 	this.unicodeToRaw = function ( input ) {
-		return convert( input, clean.unicode, clean.raw );
+		return convert( input, 'unicode', 'raw' );
 	};
 
 	this.unicodeToSimple = function ( input ) {
-		return convert( input, clean.unicode, clean.simple );
+		return convert( input, 'unicode', 'simple' );
 	};
 
 	/* convenience */
 	this.toAscii = function ( input ) {
 		var output = input;
-		if ( options.html === true ) {
-			output = self.htmlToAscii( output );
-		}
-		if ( options.raw === true ) {
-			output = self.rawToAscii( output );
-		}
-		if ( options.simple === true ) {
-			output = self.simpleToAscii( output );
-		}
-		if ( options.unicode === true ) {
-			output = self.unicodeToAscii( output );
-		}
-		return output;
+		return this.htmlToAscii( output )
+			.rawToAscii( output )
+			.simpleToAscii( output )
+			.unicodeToAscii( output );
 	};
 
 	this.toHtml = function ( input ) {
 		var output = input;
-		if ( options.ascii === true ) {
-			output = self.asciiToHtml( output );
-		}
-		if ( options.raw === true ) {
-			output = self.rawToHtml( output );
-		}
-		if ( options.simple === true ) {
-			output = self.simpleToHtml( output );
-		}
-		if ( options.unicode === true ) {
-			output = self.unicodeToHtml( output );
-		}
-		return output;
+		return this.asciiToHtml( output )
+			.rawToHtml( output )
+			.simpleToHtml( output )
+			.unicodeToHtml( output );
 	};
 
 	this.toRaw = function ( input ) {
 		var output = input;
-		if ( options.ascii === true ) {
-			output = self.asciiToRaw( output );
-		}
-		if ( options.html === true ) {
-			output = self.htmlToRaw( output );
-		}
-		if ( options.simple === true ) {
-			output = self.simpleToRaw( output );
-		}
-		if ( options.unicode === true ) {
-			output = self.unicodeToRaw( output );
-		}
-		return output;
+		return this.asciiToRaw( output )
+			.htmlToRaw( output )
+			.simpleToRaw( output )
+			.unicodeToRaw( output );
 	};
 
 	this.toSimple = function ( input ) {
 		var output = input;
-		if ( options.ascii === true ) {
-			output = self.asciiToSimple( output );
-		}
-		if ( options.html === true ) {
-			output = self.htmlToSimple( output );
-		}
-		if ( options.raw === true ) {
-			output = self.rawToSimple( output );
-		}
-		if ( options.unicode === true ) {
-			output = self.unicodeToSimple( output );
-		}
-		return output;
+		return this.asciiToSimple( output )
+			.htmlToSimple( output )
+			.rawToSimple( output )
+			.unicodeToSimple( output );
 	};
 
 	this.toUnicode = function ( input ) {
 		var output = input;
-		if ( options.ascii === true ) {
-			output = self.asciiToUnicode( output );
-		}
-		if ( options.html === true ) {
-			output = self.htmlToUnicode( output );
-		}
-		if ( options.raw === true ) {
-			output = self.rawToUnicode( output );
-		}
-		if ( options.simple === true ) {
-			output = self.simpleToUnicode( output );
-		}
-		return output;
+		return this.asciiToUnicode( output )
+			.htmlToUnicode( output )
+			.rawToUnicode( output )
+			.simpleToUnicode( output );
 	};
 
 	this.config = function ( configOpts ) {
@@ -230,4 +182,4 @@ var charming = function () {
 	};
 };
 
-module.exports = new charming();
+module.exports = new Charming();
