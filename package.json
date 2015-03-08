@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/totaltrek/charmed.git"
+    "url": "https://github.com/iConstituent/charmed.git"
   },
   "keywords": [
     "unicode",
@@ -15,9 +15,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/totaltrek/charmed/issues"
+    "url": "https://github.com/iConstituent/charmed/issues"
   },
-  "homepage": "https://github.com/totaltrek/charmed",
+  "homepage": "https://github.com/iConstituent/charmed",
   "author": "Eric C. Davis <iconecd@users.noreply.github.com>",
   "contributors" [
     "Eric C. Davis <totaltrek@users.noreply.github.com>"
