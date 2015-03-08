@@ -5,7 +5,7 @@ var	fs = require('fs'),
 	charfile = path.resolve( __dirname + '/chars.json' ),
 	filedata = fs.readFileSync( charfile, { encoding: 'utf16le' } ),
 	chars = JSON.parse( filedata ),
-	clean = [];
+	clean = {};
 
 var options = {
 	ascii: true,
@@ -15,6 +15,15 @@ var options = {
 	unicode: true,
 	disableWarning: false
 };
+
+/*
+if chars.json is broken it will have thrown during parse.
+if it has no length, that's an unparseable error you need to catch.
+don't break chars.json
+*/
+Object.keys( chars[ 0 ] ).forEach( function ( val ) {
+	clean[ val ] = [];
+});
 
 chars.forEach( function ( val ) {
 	clean.ascii.push( String.fromCharCode( val.ascii ) );
